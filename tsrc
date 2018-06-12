@@ -22,6 +22,9 @@ alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 # Java
 export JAVA_HOME="$(/usr/libexec/java_home)"
 
+# Haskell Stack
+export PATH="~/.local/bin:$PATH"
+
 # Hadoop
 export HADOOP_HOME="~/apache/hadoop"
 PATH="~/apache/hadoop/bin:~/apache/hadoop/sbin:$PATH"
