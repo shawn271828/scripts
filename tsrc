@@ -5,9 +5,6 @@ alias proxy_off='unset all_proxy'
 # Homebrew
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 
-# Anaconda
-source ~/anaconda3/etc/profile.d/conda.sh
-conda activate
 
 # GNU utils
 PATH="/usr/local/opt/findutils/libexec/gnubin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -47,6 +44,10 @@ export LC_ALL="en_US.UTF-8"
 
 # z
 . /usr/local/etc/profile.d/z.sh
+
+# Anaconda
+source ~/anaconda3/etc/profile.d/conda.sh
+conda activate
 
 # =====================================================
 # Below are some color settings
