@@ -2,6 +2,9 @@
 alias proxy_on='export all_proxy=socks5://127.0.0.1:1086'
 alias proxy_off='unset all_proxy'
 
+# Homebrew
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+
 # Emacs
 alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 
