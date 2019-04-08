@@ -15,6 +15,14 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
+# Build Python (brew install zlib sqlite3)
+export LDFLAGS="-L/usr/local/opt/sqlite/lib -L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/sqlite/include -I/usr/local/opt/zlib/include"
+export PKG_CONFIG_PATH="/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/zlib/lib/pkgconfig"
+
+# Use newer sqlite3 than that macOS shipped with
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+
 # locale setting
 export LC_ALL="en_US.UTF-8"
 
