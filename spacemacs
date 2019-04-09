@@ -476,14 +476,17 @@ before packages are loaded."
 
   ;; To solve the issue of semantic-mode completion lag, also there's some
   ;; debugging technique:
-  ;; 1. Trigger debug trace: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
-  ;; 2. Another one: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
+  ;; 1. Send SIGUSR2: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
+  ;; 2. Enable debug-on-quit and press C-g: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
   (eval-after-load 'semantic
     (add-hook 'semantic-mode-hook
               (lambda ()
                 (dolist (x (default-value 'completion-at-point-functions))
                   (when (string-prefix-p "semantic-" (symbol-name x))
                     (remove-hook 'completion-at-point-functions x))))))
+
+  ;; Disable ggtags-highlight-tag-at-point
+  (setq ggtags-highlight-tag nil)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
