@@ -59,7 +59,7 @@ This function should only modify configuration layer settings."
      ibuffer
      osx
      docker
-     ;; semantic
+     semantic
      c-c++
      gtags
      )
@@ -473,6 +473,17 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; Uncomment below line if you want to helm to split window inside
   ;; (setq-default helm-display-function 'helm-default-display-buffer)
+
+  ;; To solve the issue of semantic-mode completion lag, also there's some
+  ;; debugging technique:
+  ;; 1. Trigger debug trace: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
+  ;; 2. Another one: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
+  (eval-after-load 'semantic
+    (add-hook 'semantic-mode-hook
+              (lambda ()
+                (dolist (x (default-value 'completion-at-point-functions))
+                  (when (string-prefix-p "semantic-" (symbol-name x))
+                    (remove-hook 'completion-at-point-functions x))))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
