@@ -59,7 +59,7 @@ This function should only modify configuration layer settings."
      ibuffer
      osx
      docker
-     semantic
+     ;; semantic
      c-c++
      gtags
      )
