@@ -204,7 +204,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
+   dotspacemacs-mode-line-theme 'doom
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -245,7 +245,7 @@ It should only modify the values of Spacemacs settings."
    ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
 
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
@@ -478,15 +478,34 @@ before packages are loaded."
   ;; debugging technique:
   ;; 1. Send SIGUSR2: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
   ;; 2. Enable debug-on-quit and press C-g: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
-  (eval-after-load 'semantic
-    (add-hook 'semantic-mode-hook
-              (lambda ()
-                (dolist (x (default-value 'completion-at-point-functions))
-                  (when (string-prefix-p "semantic-" (symbol-name x))
-                    (remove-hook 'completion-at-point-functions x))))))
+  ;; 3. Root cause: `https://github.com/syl20bnr/spacemacs/issues/1907'
+  (add-hook 'semantic-mode-hook
+            (lambda ()
+              (dolist (x (default-value 'completion-at-point-functions))
+                (when (string-prefix-p "semantic-" (symbol-name x))
+                  (remove-hook 'completion-at-point-functions x)))))
 
   ;; Disable ggtags-highlight-tag-at-point
   (setq ggtags-highlight-tag nil)
+
+  ;; Customize doom-modeline
+  (setq doom-modeline-height 25)
+  (setq doom-modeline-bar-width 3)
+  (setq doom-modeline-icon t)
+  (setq doom-modeline-checker-simple-format t)
+  (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+  ;; Don’t compact font caches during GC.
+  (setq inhibit-compacting-font-caches t)
+  ;; Surpress ridiculous symbolic path
+  (setq find-file-visit-truename t)
+  ;; Show purpose info on mode line
+  (defun shawn//set-purpose-info (&rest args)
+    (setq global-mode-string (purpose--modeline-string)))
+  (defun shawn//advise-purpose-functions (function-list)
+    (dolist (func function-list)
+      (advice-add func :after #'shawn//set-purpose-info)))
+  (shawn//advise-purpose-functions '(purpose-set-window-purpose purpose-toggle-window-buffer-dedicated purpose-toggle-window-purpose-dedicated))
+  (add-hook 'purpose-mode-hook #'shawn//set-purpose-info)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
