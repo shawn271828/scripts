@@ -479,11 +479,12 @@ before packages are loaded."
   ;; 1. Send SIGUSR2: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
   ;; 2. Enable debug-on-quit and press C-g: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
   ;; 3. Root cause: `https://github.com/syl20bnr/spacemacs/issues/1907'
-  (add-hook 'semantic-mode-hook
-            (lambda ()
-              (dolist (x (default-value 'completion-at-point-functions))
-                (when (string-prefix-p "semantic-" (symbol-name x))
-                  (remove-hook 'completion-at-point-functions x)))))
+  (eval-after-load 'semantic
+    (add-hook 'semantic-mode-hook
+              (lambda ()
+                (dolist (x (default-value 'completion-at-point-functions))
+                  (when (string-prefix-p "semantic-" (symbol-name x))
+                    (remove-hook 'completion-at-point-functions x))))))
 
   ;; Disable ggtags-highlight-tag-at-point
   (setq ggtags-highlight-tag nil)
@@ -501,11 +502,9 @@ before packages are loaded."
   ;; Show purpose info on mode line
   (defun shawn//set-purpose-info (&rest args)
     (setq global-mode-string (purpose--modeline-string)))
-  (defun shawn//advise-purpose-functions (function-list)
-    (dolist (func function-list)
-      (advice-add func :after #'shawn//set-purpose-info)))
-  (shawn//advise-purpose-functions '(purpose-set-window-purpose purpose-toggle-window-buffer-dedicated purpose-toggle-window-purpose-dedicated))
-  (add-hook 'purpose-mode-hook #'shawn//set-purpose-info)
+  (defun shawn//advise-doom-modeline ()
+    (advice-add 'doom-modeline-format--main :before #'shawn//set-purpose-info))
+  (add-hook 'purpose-mode-hook #'shawn//advise-doom-modeline)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
