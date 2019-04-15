@@ -59,9 +59,12 @@ This function should only modify configuration layer settings."
      ibuffer
      osx
      docker
-     semantic
+     ;; semantic
      c-c++
      gtags
+     imenu-list
+     python
+     html
      )
 
    ;; List of additional packages that will be installed without being
@@ -204,7 +207,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme 'doom
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -479,18 +482,23 @@ before packages are loaded."
   ;; 1. Send SIGUSR2: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
   ;; 2. Enable debug-on-quit and press C-g: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
   ;; 3. Root cause: `https://github.com/syl20bnr/spacemacs/issues/1907'
-  (eval-after-load 'semantic
-    (add-hook 'semantic-mode-hook
-              (lambda ()
-                (dolist (x (default-value 'completion-at-point-functions))
-                  (when (string-prefix-p "semantic-" (symbol-name x))
-                    (remove-hook 'completion-at-point-functions x))))))
+  ;; (eval-after-load 'semantic
+  ;;   (add-hook 'semantic-mode-hook
+  ;;             (lambda ()
+  ;;               (dolist (x (default-value 'completion-at-point-functions))
+  ;;                 (when (string-prefix-p "semantic-" (symbol-name x))
+  ;;                   (remove-hook 'completion-at-point-functions x))))))
 
   ;; Disable ggtags-highlight-tag-at-point
   (setq ggtags-highlight-tag nil)
 
+  ;; Django for web-mode
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq web-mode-engines-alist '(("django" . "\\.html\\'")))))
+
   ;; Customize doom-modeline
-  (setq doom-modeline-height 25)
+  (setq doom-modeline-height 28)
   (setq doom-modeline-bar-width 3)
   (setq doom-modeline-icon t)
   (setq doom-modeline-checker-simple-format t)
