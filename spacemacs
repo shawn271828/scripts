@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(treemacs-icons-dired)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -496,6 +496,12 @@ before packages are loaded."
   (add-hook 'python-mode-hook
             (lambda ()
               (setq web-mode-engines-alist '(("django" . "\\.html\\'")))))
+
+  ;; Dired on macos
+  (setq dired-use-ls-dired nil)
+  (add-hook 'dired-mode-hook
+            (lambda ()
+              (treemacs-icons-dired-mode 1)))
 
   ;; Customize doom-modeline
   (setq doom-modeline-height 28)
