@@ -523,7 +523,7 @@ before packages are loaded."
                                 (fboundp 'pyenv-mode-version))
                            (format "[%s] " (pyenv-mode-version))
                          ""))
-          (purpose-info (if (fboundp #'purpose--modeline-string)
+          (purpose-info (if (fboundp 'purpose--modeline-string)
                             (purpose--modeline-string)
                           "")))
       (setq global-mode-string (format "%s%s" python-venv purpose-info))))
