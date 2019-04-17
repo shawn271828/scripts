@@ -207,7 +207,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
+   dotspacemacs-mode-line-theme 'doom
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -509,16 +509,26 @@ before packages are loaded."
   (setq doom-modeline-icon t)
   (setq doom-modeline-checker-simple-format t)
   (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+  (setq doom-modeline-env-version nil)
+
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
+
   ;; Surpress ridiculous symbolic path
   (setq find-file-visit-truename t)
-  ;; Show purpose info on mode line
-  (defun shawn//set-purpose-info (&rest args)
-    (setq global-mode-string (purpose--modeline-string)))
-  (defun shawn//advise-doom-modeline ()
-    (advice-add 'doom-modeline-format--main :before #'shawn//set-purpose-info))
-  (add-hook 'purpose-mode-hook #'shawn//advise-doom-modeline)
+
+  ;; Show extra info on mode line
+  (defun shawn//set-extra-info (&rest args)
+    (let ((python-venv (if (and (eq 'python-mode major-mode)
+                                (fboundp 'pyenv-mode-version))
+                           (format "[%s] " (pyenv-mode-version))
+                         ""))
+          (purpose-info (if (fboundp #'purpose--modeline-string)
+                            (purpose--modeline-string)
+                          "")))
+      (setq global-mode-string (format "%s%s" python-venv purpose-info))))
+
+  (advice-add 'doom-modeline-format--main :before #'shawn//set-extra-info)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
