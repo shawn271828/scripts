@@ -39,7 +39,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
+     (helm :variables spacemacs-helm-rg-max-column-number 1024)
      auto-completion
      better-defaults
      emacs-lisp
@@ -59,7 +59,7 @@ This function should only modify configuration layer settings."
      ibuffer
      osx
      docker
-     ;; semantic
+     themes-megapack
      c-c++
      gtags
      imenu-list
@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(treemacs-icons-dired)
+   dotspacemacs-additional-packages '(treemacs-icons-dired ivy swiper wgrep)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -197,8 +197,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn
-                         sanityinc-solarized-light)
+   dotspacemacs-themes '(doom-one
+                         zenburn)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -529,6 +529,39 @@ before packages are loaded."
       (setq global-mode-string (format "%s%s" python-venv purpose-info))))
 
   (advice-add 'doom-modeline-format--main :before #'shawn//set-extra-info)
+  ;; Start of replacing helm-swoop with swiper
+  (defun spacemacs/swiper-region-or-symbol ()
+    "Run `swiper' with the selected region or the symbol
+around point as the initial input."
+    (interactive)
+    (let ((input (if (region-active-p)
+                     (buffer-substring-no-properties
+                      (region-beginning) (region-end))
+                   (thing-at-point 'symbol t)))
+          (ivy-height 28))
+      (swiper input)))
+
+  (ivy-mode 1)
+  (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
+  (evil-make-overriding-map ivy-occur-mode-map 'normal)
+  (spacemacs/set-leader-keys-for-major-mode 'ivy-occur-grep-mode
+    "w" 'spacemacs/ivy-wgrep-change-to-wgrep-mode
+    "s" 'wgrep-save-all-buffers)
+  (ivy-mode 0)
+
+  (evil-define-key 'normal wgrep-mode-map ",," 'wgrep-finish-edit)
+  (evil-define-key 'normal wgrep-mode-map ",c" 'wgrep-finish-edit)
+  (evil-define-key 'normal wgrep-mode-map ",a" 'wgrep-abort-changes)
+  (evil-define-key 'normal wgrep-mode-map ",k" 'wgrep-abort-changes)
+
+  (setq ivy-height 28)
+  (advice-add 'spacemacs/helm-swoop-region-or-symbol :override #'spacemacs/swiper-region-or-symbol)
+  (advice-add 'helm-swoop :override #'swiper)
+  (advice-add 'helm-multi-swoop-all :override #'swiper-all)
+
+  (spacemacs/set-leader-keys
+    "rL" 'ivy-resume)
+  ;; End of replacement
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
