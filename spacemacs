@@ -39,7 +39,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     (helm :variables spacemacs-helm-rg-max-column-number 1024)
+     (ivy :variables ivy-enable-advanced-buffer-information t)
      auto-completion
      better-defaults
      emacs-lisp
@@ -74,7 +74,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(treemacs-icons-dired ivy swiper wgrep)
+   dotspacemacs-additional-packages '(treemacs-icons-dired)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -489,6 +489,8 @@ before packages are loaded."
   ;;                 (when (string-prefix-p "semantic-" (symbol-name x))
   ;;                   (remove-hook 'completion-at-point-functions x))))))
 
+  (setq ivy-initial-inputs-alist nil)
+
   ;; Disable ggtags-highlight-tag-at-point
   (setq ggtags-highlight-tag nil)
 
@@ -529,39 +531,6 @@ before packages are loaded."
       (setq global-mode-string (format "%s%s" python-venv purpose-info))))
 
   (advice-add 'doom-modeline-format--main :before #'shawn//set-extra-info)
-  ;; Start of replacing helm-swoop with swiper
-  (defun spacemacs/swiper-region-or-symbol ()
-    "Run `swiper' with the selected region or the symbol
-around point as the initial input."
-    (interactive)
-    (let ((input (if (region-active-p)
-                     (buffer-substring-no-properties
-                      (region-beginning) (region-end))
-                   (thing-at-point 'symbol t)))
-          (ivy-height 28))
-      (swiper input)))
-
-  (ivy-mode 1)
-  (evil-set-initial-state 'ivy-occur-grep-mode 'normal)
-  (evil-make-overriding-map ivy-occur-mode-map 'normal)
-  (spacemacs/set-leader-keys-for-major-mode 'ivy-occur-grep-mode
-    "w" 'spacemacs/ivy-wgrep-change-to-wgrep-mode
-    "s" 'wgrep-save-all-buffers)
-  (ivy-mode 0)
-
-  (evil-define-key 'normal wgrep-mode-map ",," 'wgrep-finish-edit)
-  (evil-define-key 'normal wgrep-mode-map ",c" 'wgrep-finish-edit)
-  (evil-define-key 'normal wgrep-mode-map ",a" 'wgrep-abort-changes)
-  (evil-define-key 'normal wgrep-mode-map ",k" 'wgrep-abort-changes)
-
-  (setq ivy-height 28)
-  (advice-add 'spacemacs/helm-swoop-region-or-symbol :override #'spacemacs/swiper-region-or-symbol)
-  (advice-add 'helm-swoop :override #'swiper)
-  (advice-add 'helm-multi-swoop-all :override #'swiper-all)
-
-  (spacemacs/set-leader-keys
-    "rL" 'ivy-resume)
-  ;; End of replacement
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
