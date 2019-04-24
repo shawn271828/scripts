@@ -489,15 +489,19 @@ before packages are loaded."
   ;;                 (when (string-prefix-p "semantic-" (symbol-name x))
   ;;                   (remove-hook 'completion-at-point-functions x))))))
 
+  ;; Disable starting `^'
   (setq ivy-initial-inputs-alist nil)
+
+  ;; Set indent offset
+  (setq-default js2-basic-offset 2
+                js-indent-level 2
+                web-mode-markup-indent-offset 2)
 
   ;; Disable ggtags-highlight-tag-at-point
   (setq ggtags-highlight-tag nil)
 
   ;; Django for web-mode
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq web-mode-engines-alist '(("django" . "\\.html\\'")))))
+  (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
 
   ;; Dired on macos
   (setq dired-use-ls-dired nil)
