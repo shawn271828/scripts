@@ -39,7 +39,9 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     (ivy :variables ivy-enable-advanced-buffer-information t)
+     (ivy :variables
+          ivy-enable-advanced-buffer-information t
+          ivy-initial-inputs-alist nil)
      auto-completion
      better-defaults
      emacs-lisp
@@ -61,10 +63,17 @@ This function should only modify configuration layer settings."
      docker
      themes-megapack
      c-c++
-     gtags
+     (gtags :disabled-for python javascript emacs-lisp
+            :variables ggtags-highlight-tag nil)
      imenu-list
      python
-     html
+     (html :variables
+           web-mode-engines-alist '(("django" . "\\.html\\'"))
+           web-mode-markup-indent-offset 2)
+     (javascript :variables
+                 js2-basic-offset 2
+                 js-indent-level 2
+                 spacemacs-jump-handlers-js2-mode '((tern-find-definition :async t) evil-goto-definition))
      )
 
    ;; List of additional packages that will be installed without being
@@ -488,20 +497,6 @@ before packages are loaded."
   ;;               (dolist (x (default-value 'completion-at-point-functions))
   ;;                 (when (string-prefix-p "semantic-" (symbol-name x))
   ;;                   (remove-hook 'completion-at-point-functions x))))))
-
-  ;; Disable starting `^'
-  (setq ivy-initial-inputs-alist nil)
-
-  ;; Set indent offset
-  (setq-default js2-basic-offset 2
-                js-indent-level 2
-                web-mode-markup-indent-offset 2)
-
-  ;; Disable ggtags-highlight-tag-at-point
-  (setq ggtags-highlight-tag nil)
-
-  ;; Django for web-mode
-  (setq web-mode-engines-alist '(("django" . "\\.html\\'")))
 
   ;; Dired on macos
   (setq dired-use-ls-dired nil)
