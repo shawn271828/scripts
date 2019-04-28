@@ -20,11 +20,11 @@ This function should only modify configuration layer settings."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation 'unused
+   dotspacemacs-enable-lazy-installation nil
 
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
-   dotspacemacs-ask-for-lazy-installation t
+   dotspacemacs-ask-for-lazy-installation nil
 
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
@@ -49,7 +49,13 @@ This function should only modify configuration layer settings."
      restclient
      better-defaults
      emacs-lisp
-     git
+     (git :variables
+          git-magit-status-fullscreen t
+          magit-push-always-verify nil
+          magit-save-repository-buffers 'dontask
+          magit-revert-buffers 'silent
+          magit-refs-show-commit-count 'all
+          magit-revision-show-gravatars nil)
      markdown
      multiple-cursors
      treemacs
@@ -66,7 +72,6 @@ This function should only modify configuration layer settings."
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      osx
      docker
-     themes-megapack
      c-c++
      (haskell :variables haskell-enable-hindent t
               haskell-completion-backend 'intero)
@@ -91,25 +96,13 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(treemacs-icons-dired)
+   dotspacemacs-additional-packages '(treemacs-icons-dired helm-ag)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
-                                                   evil-indent-plus volatile-highlights
-                                                   spaceline holy-mode skewer-mode highlight-indentation vi-tilde-fringe eyebrowse ws-butler
-                                                   org-bullets smooth-scrolling org-repo-todo org-download org-timer
-                                                   livid-mode git-gutter git-gutter-fringe evil-escape
-                                                   leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-                                                   ac-ispell ace-jump-mode auto-complete auto-dictionary
-                                                   clang-format define-word google-translate disaster epic
-                                                   fancy-battery org-present orgit orglue spacemacs-theme
-                                                   helm-flyspell flyspell-correct-helm clean-aindent-mode
-                                                   helm-c-yasnippet ace-jump-helm-line helm-make magithub
-                                                   helm-themes helm-swoop helm-spacemacs-help smeargle
-                                                   ido-vertical-mode flx-ido company-quickhelp helm-purpose helm-ag)
+   dotspacemacs-excluded-packages '(evil-lisp-state)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -118,7 +111,8 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-only
+   dotspacemacs-delete-orphan-packages t))
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -226,8 +220,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-one
-                         zenburn)
+   dotspacemacs-themes '(solarized-light
+                         doom-one)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -236,7 +230,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme 'doom
+   dotspacemacs-mode-line-theme '(spacemacs :separator arrow :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -244,9 +238,9 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Operator Mono SSm"
-                               :size 16
-                               :weight light
+   dotspacemacs-default-font '("Operator Mono SSM"
+                               :size 15
+                               :weight normal
                                :width normal)
 
    ;; The leader key (default "SPC")
@@ -503,53 +497,22 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  ;; Uncomment below line if you want to helm to split window inside
-  ;; (setq-default helm-display-function 'helm-default-display-buffer)
-
-  ;; To solve the issue of semantic-mode completion lag, also there's some
-  ;; debugging technique:
-  ;; 1. Send SIGUSR2: `https://github.com/company-mode/company-mode/issues/525#issuecomment-254375711'
-  ;; 2. Enable debug-on-quit and press C-g: `https://github.com/company-mode/company-mode/issues/525#issuecomment-385988824'
-  ;; 3. Root cause: `https://github.com/syl20bnr/spacemacs/issues/1907'
-  ;; (eval-after-load 'semantic
-  ;;   (add-hook 'semantic-mode-hook
-  ;;             (lambda ()
-  ;;               (dolist (x (default-value 'completion-at-point-functions))
-  ;;                 (when (string-prefix-p "semantic-" (symbol-name x))
-  ;;                   (remove-hook 'completion-at-point-functions x))))))
-
   ;; Dired on macos
   (setq dired-use-ls-dired nil)
   (add-hook 'dired-mode-hook
             (lambda ()
               (treemacs-icons-dired-mode 1)))
 
-  ;; Customize doom-modeline
-  (setq doom-modeline-height 28)
-  (setq doom-modeline-bar-width 3)
-  (setq doom-modeline-icon t)
-  (setq doom-modeline-checker-simple-format t)
-  (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
-  (setq doom-modeline-env-version nil)
-
-  ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
-
-  ;; Surpress ridiculous symbolic path
   (setq find-file-visit-truename t)
 
-  ;; Show extra info on mode line
-  (defun shawn//set-extra-info (&rest args)
-    (let ((python-venv (if (and (eq 'python-mode major-mode)
-                                (fboundp 'pyenv-mode-version))
-                           (format "[%s] " (pyenv-mode-version))
-                         ""))
-          (purpose-info (if (fboundp 'purpose--modeline-string)
-                            (purpose--modeline-string)
-                          "")))
-      (setq global-mode-string (format "%s%s" python-venv purpose-info))))
-
-  (advice-add 'doom-modeline-format--main :before #'shawn//set-extra-info)
+  ;; Custome keys
+  (define-key evil-normal-state-map (kbd "H-y") 'counsel-yank-pop)
+  (define-key evil-insert-state-map (kbd "H-y") 'counsel-yank-pop)
+  (define-key evil-insert-state-map (kbd "H-f") 'forward-word)
+  (define-key evil-insert-state-map (kbd "H-b") 'backward-word)
+  (define-key evil-insert-state-map (kbd "H-a") 'mwim-beginning-of-code-or-line)
+  (define-key evil-insert-state-map (kbd "H-e") 'mwim-end-of-code-or-line)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
