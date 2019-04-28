@@ -42,7 +42,11 @@ This function should only modify configuration layer settings."
      (ivy :variables
           ivy-enable-advanced-buffer-information t
           ivy-initial-inputs-alist nil)
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-snippets-in-popup t
+                      :disabled-for org markdown)
+     restclient
      better-defaults
      emacs-lisp
      git
@@ -51,18 +55,21 @@ This function should only modify configuration layer settings."
      treemacs
      org
      (shell :variables
-            shell-default-shell 'eshell
-            shell-default-width 50
-            shell-default-position 'right)
-     syntax-checking
+            shell-default-shell 'ansi-term
+            shell-default-term-shell "/bin/zsh")
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default nil
+                      syntax-checking-enable-tooltips nil)
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-diff-side 'left)
-     ibuffer
+     (ibuffer :variables ibuffer-group-buffers-by 'projects)
      osx
      docker
      themes-megapack
      c-c++
+     (haskell :variables haskell-enable-hindent t
+              haskell-completion-backend 'intero)
      (gtags :disabled-for python javascript emacs-lisp
             :variables ggtags-highlight-tag nil)
      imenu-list
@@ -71,9 +78,10 @@ This function should only modify configuration layer settings."
            web-mode-engines-alist '(("django" . "\\.html\\'"))
            web-mode-markup-indent-offset 2)
      (javascript :variables
+                 javascript-backend 'nil
                  js2-basic-offset 2
                  js-indent-level 2
-                 spacemacs-jump-handlers-js2-mode '((tern-find-definition :async t) evil-goto-definition))
+                 js2-strict-missing-semi-warning nil)
      )
 
    ;; List of additional packages that will be installed without being
@@ -89,7 +97,19 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(dumb-jump)
+   dotspacemacs-excluded-packages '(magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
+                                                   evil-indent-plus volatile-highlights
+                                                   spaceline holy-mode skewer-mode highlight-indentation vi-tilde-fringe eyebrowse ws-butler
+                                                   org-bullets smooth-scrolling org-repo-todo org-download org-timer
+                                                   livid-mode git-gutter git-gutter-fringe evil-escape
+                                                   leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+                                                   ac-ispell ace-jump-mode auto-complete auto-dictionary
+                                                   clang-format define-word google-translate disaster epic
+                                                   fancy-battery org-present orgit orglue spacemacs-theme
+                                                   helm-flyspell flyspell-correct-helm clean-aindent-mode
+                                                   helm-c-yasnippet ace-jump-helm-line helm-make magithub
+                                                   helm-themes helm-swoop helm-spacemacs-help smeargle
+                                                   ido-vertical-mode flx-ido company-quickhelp helm-purpose helm-ag)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
