@@ -1,5 +1,8 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.cargo/bin:$PATH
+
+export RUSTUP_DIST_SERVER=https://mirrors.ustc.edu.cn/rust-static
+export RUSTUP_UPDATE_ROOT=https://mirrors.ustc.edu.cn/rust-static/rustup
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/shawn/.oh-my-zsh"
