@@ -35,7 +35,7 @@ This function should only modify configuration layer settings."
    '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+     ;; Uncomment some layer names andpress `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      auto-completion
@@ -45,23 +45,23 @@ This function should only modify configuration layer settings."
      git
      helm
      c-c++
-     (rust :variables rust-backend 'racer)
-     ;; lsp
-     ;; markdown
+     (rust :variables rust-backend 'lsp)
+     lsp
+     osx
+     markdown
      multiple-cursors
      ;; org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;; spell-checking
-     ;; syntax-checking
+     syntax-checking
      (version-control :variables
                       version-control-diff-tool 'diff-hl
                       version-control-diff-side 'left )
      treemacs
      themes-megapack
      (gtags :variables gtags-enable-by-default nil)
-     (osx :variables osx-swap-option-and-command t)
      )
 
    ;; List of additional packages that will be installed without being
@@ -484,7 +484,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-(setq configuration-layer-elpa-archives
+  (setq configuration-layer-elpa-archives
     '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
       ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
       ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
