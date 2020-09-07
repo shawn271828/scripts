@@ -35,7 +35,7 @@ This function should only modify configuration layer settings."
    '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names andpress `SPC f e R' (Vim style) or
+     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      auto-completion
@@ -45,8 +45,14 @@ This function should only modify configuration layer settings."
      git
      helm
      c-c++
-     (rust :variables rust-backend 'lsp)
-     lsp
+     (python :variables
+             python-backend 'lsp)
+     (rust :variables
+           rust-backend 'lsp
+           lsp-rust-server 'rust-analyzer)
+     (lsp :variables
+          lsp-ui-sideline-enable nil
+          lsp-ui-doc-enable nil)
      osx
      markdown
      multiple-cursors
@@ -61,7 +67,7 @@ This function should only modify configuration layer settings."
                       version-control-diff-side 'left )
      treemacs
      themes-megapack
-     (gtags :variables gtags-enable-by-default nil)
+     ;; (gtags :variables gtags-enable-by-default nil)
      )
 
    ;; List of additional packages that will be installed without being
@@ -503,27 +509,8 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setq-default evil-escape-key-sequence "fd")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (cargo rust-mode caml seeing-is-believing rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe rbenv rake pytest pyenv-mode py-isort pippel pipenv pyvenv pip-requirements ocp-indent ob-elixir mvn minitest meghanada maven-test-mode lsp-ui lsp-python-ms lsp-java live-py-mode json-navigator hierarchy json-mode json-snatcher json-reformat importmagic epc ctable concurrent helm-pydoc helm-lsp helm-company helm-c-yasnippet groovy-mode groovy-imports pcache fuzzy flycheck-ycmd flycheck-rtags flycheck-pos-tip pos-tip flycheck-ocaml merlin flycheck-credo emojify emoji-cheat-sheet-plus dune cython-mode company-ycmd company-rtags company-emoji company-c-headers company-anaconda chruby ccls bundler inf-ruby blacken auto-yasnippet anaconda-mode pythonic alchemist elixir-mode ac-ispell auto-complete ycmd request-deferred deferred helm-rtags rtags google-c-style disaster cpp-auto-include web-beautify tide typescript-mode tern prettier-js nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl impatient-mode htmlize simple-httpd dap-mode posframe lsp-treemacs bui lsp-mode markdown-mode dash-functional counsel-gtags counsel swiper ivy company add-node-modules-path xkcd zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme reveal-in-osx-finder rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme osx-trash osx-dictionary osx-clipboard organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme modus-vivendi-theme modus-operandi-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme launchctl kaolin-themes jbeans-theme jazz-theme ir-black-theme inkpot-theme ibuffer-projectile heroku-theme hemisu-theme helm-gtags hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme ggtags gandalf-theme flatui-theme flatland-theme farmhouse-theme eziam-theme exotica-theme espresso-theme dracula-theme doom-themes django-theme darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme chocolate-theme autothemer cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restart-emacs request rainbow-delimiters popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless mwim move-text macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio git-gutter-fringe+ font-lock+ flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump dotenv-mode diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode browse-at-remote auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
