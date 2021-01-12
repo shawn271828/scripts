@@ -2,3 +2,6 @@
 # python iterm-custom-keys.py > init-keymap.el
 python iterm-custom-keys.py -i > ~/Library/Application Support/iTerm2/DynamicProfiles/keymap.json
 然后在iTerm2中使用新的profile设置为default
+
+# 增加24bit终端
+tic -x -o ~/.terminfo terminfo-24bit.src
