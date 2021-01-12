@@ -1,0 +1,4 @@
+# 下面这步不用了，已经集成进emacs配置文件
+# python iterm-custom-keys.py > init-keymap.el
+python iterm-custom-keys.py -i > ~/Library/Application Support/iTerm2/DynamicProfiles/keymap.json
+然后在iTerm2中使用新的profile设置为default
