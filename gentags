@@ -1,4 +1,6 @@
-tagfile="files.gtags"
+#!/bin/bash
+tagfile="gtags.files"
 find . \( -path ./.git -o -path ./arch -o -path ./tools \) -prune -o -type f -print > $tagfile
+find arch/x86 -type f >> $tagfile
 find arch/arm64 -type f >> $tagfile
 gtags -f $tagfile
